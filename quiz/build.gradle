@@ -31,15 +31,25 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // kafka
+    implementation 'org.apache.kafka:kafka_2.13:2.7.2'
+    implementation 'org.apache.kafka:kafka-clients:2.7.2'
+    implementation 'org.springframework.kafka:spring-kafka'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+
     // db connections
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    // queryDSL
-    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
-    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    //mongoDB
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+    //spring security
+    implementation "org.springframework.boot:spring-boot-starter-security"
+
+    //jwt
+    implementation "io.jsonwebtoken:jjwt:0.9.1"
 }
 
 tasks.named('test') {
@@ -50,16 +60,10 @@ tasks.test {
     ignoreFailures = true
 }
 
-def generated = "src/main/generated"
-
-sourceSets {
-    main.java.srcDirs += [ generated ]
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.generatedSourceOutputDirectory = file(generated)
-}
-
-clean.doLast {
-    file(generated).deleteDir()
+task copyYML(type: Copy){
+    copy{
+        from './BACKEND_SERVER_ENV'
+        include "*.yaml"
+        into './src/main/resources'
+    }
 }

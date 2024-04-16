@@ -1,0 +1,3 @@
+[submodule "quiz/BACKEND_SERVER_ENV"]
+	path = quiz/BACKEND_SERVER_ENV
+	url = https://github.com/Nerdy-In-Room/BACKEND_SERVER_ENV.git
